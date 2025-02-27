@@ -79,7 +79,7 @@ def verificar_ganada(jugador):
 
     return False
 
-
+#------------------------------------------------------------------------------------------------
 def minimax(tablero, profundidad, maximiza):
     if verificar_ganada(2):  # Es muy bueno para la IA
         return float('inf')
@@ -110,8 +110,25 @@ def minimax(tablero, profundidad, maximiza):
                     mejor_puntaje = min(puntaje, mejor_puntaje)
         return mejor_puntaje
 
+def mejor_mov():
+    mejor_puntaje = -float('inf')
+    mov = (-1, -1)
+    for fil in range(FILS):
+        for col in range(COLS):
+            if board[fil][col] == 0:
+                board[fil][col] = 2
+                puntaje = minimax(board, 0, False)
+                board[fil][col] = 0
+                if puntaje > mejor_puntaje:
+                    mejor_puntaje = puntaje
+                    mov = (fil, col)
+
+    if mov != (-1, -1):
+        marcar_cuadrado(mov[0], mov[1], 2)
+        return True
+    return False
+#------------------------------------------------------------------------------------------------
 """
-MAX_DEPTH = 2
 def minimax(tablero, profundidad, alpha, beta, maximiza):
     # Condiciones terminales: si hay un ganador o el tablero está lleno
     if verificar_ganada(2):  # Gana la IA (jugador 2)
@@ -158,11 +175,6 @@ def minimax(tablero, profundidad, alpha, beta, maximiza):
 
 
 
-"""
-
-
-
-
 def mejor_mov():
     mejor_puntaje = -float('inf')
     mov = (-1, -1)
@@ -170,7 +182,7 @@ def mejor_mov():
         for col in range(COLS):
             if board[fil][col] == 0:
                 board[fil][col] = 2
-                puntaje = minimax(board, 0, False)
+                puntaje = minimax(board, 0, -float('inf'), float('inf'), False)  # Se agregan alpha y beta
                 board[fil][col] = 0
                 if puntaje > mejor_puntaje:
                     mejor_puntaje = puntaje
@@ -180,7 +192,7 @@ def mejor_mov():
         marcar_cuadrado(mov[0], mov[1], 2)
         return True
     return False
-
+"""
 
 def reiniciar_juego():
     screen.fill(NEGRO)
